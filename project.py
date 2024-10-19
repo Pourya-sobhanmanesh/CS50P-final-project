@@ -1,8 +1,19 @@
 import tkinter as tk
 #from tkinter import ttk
 import ttkbootstrap as ttk
-from req import *
 import csv
+import requests
+from pprint import pprint
+
+url = 'https://api.coincap.io/v2/assets'
+api_key = 'b62751b6-510e-4f6b-ae4e-82e5e7899fa7'
+encoding_methods = "gzip, deflate"
+
+headers = {
+    "Accept-Encoding" : encoding_methods,
+    "Authorization" : f"Bearer {api_key}"
+}
+
 
 root = tk.Tk()
 
@@ -66,7 +77,7 @@ def main():
                 divider = ttk.Label(root, text = "---------------", font = font)
                 divider.grid(row = i + 1, column = 3,sticky = "w", padx = 0, pady = 0)
 
-                total_value = ttk.Label(root, text = f"Total Value: {round(total_val_all, 2)}$", font = font)
+                total_value = ttk.Label(root, text = f"Total Value: {total_val_all}$", font = font)
                 total_value.grid(row = i + 2, column = 3, sticky = "w", padx = 0, pady = 0)
 
 
@@ -107,9 +118,6 @@ def read_csv(path = "portfolio.csv"):
         reader = csv.DictReader(file)
         reader_list = []
         for row in reader:
-            if not isinstance(row["name"], str):
-                raise NotStringError("All id variables should be strings")
-            
             try:
                 row["amount"] = float(row["amount"])
             except ValueError:
@@ -131,7 +139,7 @@ def read_csv(path = "portfolio.csv"):
 def return_final_dict(reader_list):
     for row in reader_list:
         row["total_val"] = row["amount"] * float(row["priceusd"])
-        row["total_val"] = f"{row["total_val"]:.2f}"
+        row["total_val"] = f"{round(row["total_val"], 2)}"
         row["priceusd"] = "{:.4f}".format(float(row["priceusd"]))
     return reader_list
         
@@ -139,14 +147,75 @@ def calculate_total_value_all(final_dict):
     total_value_all = 0
     for row in final_dict:
         total_value_all += float(row["total_val"])
-    return total_value_all
+    return round(total_value_all, 2)
 
 class CryptoNotFound(Exception):
     pass
 class NotPositiveError(Exception):
     pass
-class NotStringError(Exception):
-    pass
+#---------------------------------------------------
+def get_by_id(*ids, url = url):
+    url += "?ids="
+    for id in ids:
+        url += id + ","
+
+    response = requests.get(url , headers = headers)
+
+    if response.status_code == 200:
+        response = response.json()["data"]
+    else:
+        print("Error!")
+
+    response_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in response if crypto["id"] != ""]
+    
+    return response_dict
+
+
+def search_req(name, url = url):
+    url += "?search="
+    url += name
+
+    r = requests.get(url, headers = headers)
+
+    if r.status_code == 200:
+        r = r.json()["data"]
+    else:
+        print("Error")
+
+    r_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in r]
+
+
+    for i, c in enumerate(r_dict):
+        if c["id"] == name.lower():
+            print("found by name")
+            index = i
+            break
+        elif c["symbol"] == name.upper():
+            print("found by symbol")
+            index = i
+            break
+        elif c["name"] == name.capitalize():
+            print("found by name")
+            index = i
+            break
+    else:
+        index = None
+
+    if index != None:
+        return r_dict[index]
+    else:
+        return False
+
+def get_by_search(*ids):
+    list_of_cryptoes = []
+    for id in ids:
+        if result := search_req(id):
+            list_of_cryptoes.append(result)
+        else:
+            print(f"could not find {id}")
+    return list_of_cryptoes
+
+
 if __name__ == "__main__":
     main()
 
