@@ -1,5 +1,5 @@
 import requests
-
+from pprint import pprint
 
 url = 'https://api.coincap.io/v2/assets'
 api_key = 'b62751b6-510e-4f6b-ae4e-82e5e7899fa7'
@@ -27,7 +27,7 @@ owned_crypto = {
 ids = [id for id in owned_crypto]
 
 def main():
-    print(get_by_search(*ids))
+    pprint(search_req("btc"))
 
 def get_by_id(*ids, url = url):
     url += "?ids="
@@ -46,7 +46,7 @@ def get_by_id(*ids, url = url):
     return response_dict
 
 
-def search(name, url = url):
+def search_req(name, url = url):
     url += "?search="
     url += name
 
@@ -81,10 +81,10 @@ def search(name, url = url):
     else:
         return False
 
-def get_by_search(*ids, url = url):
+def get_by_search(*ids):
     list_of_cryptoes = []
     for id in ids:
-        if result := search(id):
+        if result := search_req(id):
             list_of_cryptoes.append(result)
         else:
             print(f"could not find {id}")
