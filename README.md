@@ -35,19 +35,19 @@ This program is a **Cryptocurrency Portfolio Tracker** that allows users to trac
 
 ### API:
 The program uses the CoinCap API to fetch real-time data on cryptocurrency prices and market performance. To access this API, an API key is required, which should be included in the headers section of the script:
-    ```python
-    api_key = 'your_api_key_here'
-    headers = {
-    "Accept-Encoding" : "gzip, deflate",
-    "Authorization" : f"Bearer {api_key}"
-    }
+```python
+api_key = 'your_api_key_here'
+headers = {
+"Accept-Encoding" : "gzip, deflate",
+"Authorization" : f"Bearer {api_key}"
+}
 
 ### Portfolio CSV:
 The program reads a portfolio.csv file to get the amount of each cryptocurrency you own. The file should have the following format:
-    ```csv
-    name,amount
-    bitcoin,0.5
-    ethereum,2
+```csv
+name,amount
+bitcoin,0.5
+ethereum,2
 
 You can update the portfolio by editing this CSV file to reflect your current holdings.
 
