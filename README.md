@@ -16,4 +16,9 @@ This program is a **Cryptocurrency Portfolio Tracker** that allows users to trac
    ```bash
    git clone https://github.com/Pourya-sobhanmanesh/CS50P-final-project.git
    cd CS50P-final-project
+2. Install the required dependencies
+    ```bash
+   pip install -r requirements.txt
+
+
 
