@@ -19,7 +19,7 @@ root = tk.Tk()
 
 def main():
     root.title('Main')
-    root.geometry("1400x900")
+    root.geometry("1600x900")
 
     open_search_butt = ttk.Button(master=root, text = "Open Search Window", command=open_search_window)
     open_search_butt.grid(row = 0, column = 0, sticky = "w", padx = 0, pady = 30)
@@ -43,18 +43,20 @@ def main():
     else:
         total_val_all = calculate_total_value_all(final_dict)
 
-        padx, pady = 50, 15
-        font = ("Arial bold", 25)
+        padx, pady = 35, 15
+        font = ("Arial bold", 20)
         name_label = ttk.Label(root, text = "Name", font= font) 
         name_label.grid(row = 1, column = 0, sticky = "w", padx = padx, pady = pady)
         name_label = ttk.Label(root, text = "Current Price", font = font) 
         name_label.grid(row = 1, column = 1, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "Amount", font = font) 
+        name_label = ttk.Label(root, text = "24Hour Change", font = font) 
         name_label.grid(row = 1, column = 2, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "Total", font = font) 
+        name_label = ttk.Label(root, text = "Amount", font = font) 
         name_label.grid(row = 1, column = 3, sticky = "w", padx = padx, pady = pady)
+        name_label = ttk.Label(root, text = "Total", font = font) 
+        name_label.grid(row = 1, column = 4, sticky = "w", padx = padx, pady = pady)
 
-        for i in range(4):
+        for i in range(5):
             divider = ttk.Label(root, text = "---------------------", font = font)
             divider.grid(row = 2, column = i,sticky = "w", padx = 0, pady = 0)
 
@@ -67,18 +69,27 @@ def main():
             name_label = ttk.Label(root, text = row["priceusd"], font = font) 
             name_label.grid(row = i, column = 1, sticky = "w", padx = padx, pady = pady)
 
+            rounded_change = round(float(row["change_percent"]), 2)
+
+            if rounded_change > 0:
+                name_label = ttk.Label(root, text = f"+{rounded_change}%", font = font) 
+                name_label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
+            else:
+                name_label = ttk.Label(root, text = f"{rounded_change}%", font = font) 
+                name_label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
+
             name_label = ttk.Label(root, text = row["amount"], font = font) 
-            name_label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
+            name_label.grid(row = i, column = 3, sticky = "w", padx = padx, pady = pady)
 
             name_label = ttk.Label(root, text = row["total_val"], font = font)
-            name_label.grid(row = i, column = 3, sticky = "w", padx = padx, pady = pady)
+            name_label.grid(row = i, column = 4, sticky = "w", padx = padx, pady = pady)
 
             if i == (len(final_dict) - 1 + 3):
                 divider = ttk.Label(root, text = "---------------", font = font)
-                divider.grid(row = i + 1, column = 3,sticky = "w", padx = 0, pady = 0)
+                divider.grid(row = i + 1, column = 4,sticky = "w", padx = 0, pady = 0)
 
                 total_value = ttk.Label(root, text = f"Total Value: {total_val_all}$", font = font)
-                total_value.grid(row = i + 2, column = 3, sticky = "w", padx = 0, pady = 0)
+                total_value.grid(row = i + 2, column = 4, sticky = "w", padx = 0, pady = 0)
 
 
     root.mainloop()
@@ -187,15 +198,15 @@ def search_req(name, url = url):
 
     for i, c in enumerate(r_dict):
         if c["id"] == name.lower():
-            print("found by name")
+            print(f"found by id: {c["id"]}")
             index = i
             break
         elif c["symbol"] == name.upper():
-            print("found by symbol")
+            print(f"found by symbol: {c["symbol"]}")
             index = i
             break
         elif c["name"] == name.capitalize():
-            print("found by name")
+            print(f"found by name: {c["name"]}")
             index = i
             break
     else:
