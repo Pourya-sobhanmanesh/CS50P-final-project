@@ -41,14 +41,14 @@ headers = {
 "Accept-Encoding" : "gzip, deflate",
 "Authorization" : f"Bearer {api_key}"
 }
-
+```
 ### Portfolio CSV:
 The program reads a portfolio.csv file to get the amount of each cryptocurrency you own. The file should have the following format:
 ```csv
 name,amount
 bitcoin,0.5
 ethereum,2
-
+```
 You can update the portfolio by editing this CSV file to reflect your current holdings.
 
 ### Additional Notes:
