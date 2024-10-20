@@ -18,7 +18,7 @@ headers = {
 root = tk.Tk()
 
 def main():
-    root.title('Main')
+    root.title('My Portfolio')
     root.geometry("1600x900")
 
     open_search_butt = ttk.Button(master=root, text = "Open Search Window", command=open_search_window)
@@ -45,16 +45,16 @@ def main():
 
         padx, pady = 35, 15
         font = ("Arial bold", 20)
-        name_label = ttk.Label(root, text = "Name", font= font) 
-        name_label.grid(row = 1, column = 0, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "Current Price", font = font) 
-        name_label.grid(row = 1, column = 1, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "24Hour Change", font = font) 
-        name_label.grid(row = 1, column = 2, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "Amount", font = font) 
-        name_label.grid(row = 1, column = 3, sticky = "w", padx = padx, pady = pady)
-        name_label = ttk.Label(root, text = "Total", font = font) 
-        name_label.grid(row = 1, column = 4, sticky = "w", padx = padx, pady = pady)
+        label = ttk.Label(root, text = "Name", font= font) 
+        label.grid(row = 1, column = 0, sticky = "w", padx = padx, pady = pady)
+        label = ttk.Label(root, text = "Current Price", font = font) 
+        label.grid(row = 1, column = 1, sticky = "w", padx = padx, pady = pady)
+        label = ttk.Label(root, text = "24Hours Change", font = font) 
+        label.grid(row = 1, column = 2, sticky = "w", padx = padx, pady = pady)
+        label = ttk.Label(root, text = "Amount", font = font) 
+        label.grid(row = 1, column = 3, sticky = "w", padx = padx, pady = pady)
+        label = ttk.Label(root, text = "Total", font = font) 
+        label.grid(row = 1, column = 4, sticky = "w", padx = padx, pady = pady)
 
         for i in range(5):
             divider = ttk.Label(root, text = "---------------------", font = font)
@@ -63,26 +63,26 @@ def main():
 
         for i, row in enumerate(final_dict):
             i += 3
-            name_label = ttk.Label(root, text = row["name"], font = font) 
-            name_label.grid(row = i, column = 0, sticky = "w", padx = padx, pady = pady)
+            label = ttk.Label(root, text = row["name"], font = font) 
+            label.grid(row = i, column = 0, sticky = "w", padx = padx, pady = pady)
         
-            name_label = ttk.Label(root, text = row["priceusd"], font = font) 
-            name_label.grid(row = i, column = 1, sticky = "w", padx = padx, pady = pady)
+            label = ttk.Label(root, text = row["priceusd"], font = font) 
+            label.grid(row = i, column = 1, sticky = "w", padx = padx, pady = pady)
 
             rounded_change = round(float(row["change_percent"]), 2)
 
             if rounded_change > 0:
-                name_label = ttk.Label(root, text = f"+{rounded_change}%", font = font) 
-                name_label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
+                label = ttk.Label(root, text = f"+{rounded_change}%", font = font) 
+                label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
             else:
-                name_label = ttk.Label(root, text = f"{rounded_change}%", font = font) 
-                name_label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
+                label = ttk.Label(root, text = f"{rounded_change}%", font = font) 
+                label.grid(row = i, column = 2, sticky = "w", padx = padx, pady = pady)
 
-            name_label = ttk.Label(root, text = row["amount"], font = font) 
-            name_label.grid(row = i, column = 3, sticky = "w", padx = padx, pady = pady)
+            label = ttk.Label(root, text = row["amount"], font = font) 
+            label.grid(row = i, column = 3, sticky = "w", padx = padx, pady = pady)
 
-            name_label = ttk.Label(root, text = row["total_val"], font = font)
-            name_label.grid(row = i, column = 4, sticky = "w", padx = padx, pady = pady)
+            label = ttk.Label(root, text = row["total_val"], font = font)
+            label.grid(row = i, column = 4, sticky = "w", padx = padx, pady = pady)
 
             if i == (len(final_dict) - 1 + 3):
                 divider = ttk.Label(root, text = "---------------", font = font)
