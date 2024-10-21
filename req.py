@@ -27,7 +27,7 @@ owned_crypto = {
 ids = [id for id in owned_crypto]
 
 def main():
-    pprint(search_req("btc"))
+    pprint(get_by_id(*ids))
 
 def get_by_id(*ids, url = url):
     url += "?ids="
@@ -87,7 +87,7 @@ def get_by_search(*ids):
         if result := search_req(id):
             list_of_cryptoes.append(result)
         else:
-            print(f"could not find {id}")
+            return False
     return list_of_cryptoes
 
 

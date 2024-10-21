@@ -1,5 +1,4 @@
 import tkinter as tk
-#from tkinter import ttk
 import ttkbootstrap as ttk
 import csv
 import requests
@@ -114,7 +113,12 @@ def open_search_window():
         print(search_req(name))
 
         if search_var :=search_req(name):
-            result_text.set(f"----------------------------\nfound: {search_var["name"]}")
+            if float(search_var["change_percent"]) > 0:
+                change_rate = f"+{round(float(search_var["change_percent"]), 2)}%"
+            else:
+                change_rate = f"{round(float(search_var["change_percent"]), 2)}%"
+
+            result_text.set(f"\nfound: {search_var["name"]}\n---------\nRank: {search_var["rank"]}\n---------\nCurrent Price: {round(float(search_var["priceusd"]), 2)}\n---------\n24Hours Change: {change_rate}")
         else:
             result_text.set(f"----------------------------\nError: Could not find {name}!")
         
@@ -135,7 +139,7 @@ def read_csv(path = "portfolio.csv"):
                 raise ValueError(f"All amount variable should be Integers or Floats:\n\nname = {row["name"]}, amount =  {row["amount"]}")
             
             if row["amount"] <= 0:
-                raise NotPositiveError(f"Error: amount variables can not be zero or less:\n\n name = {row["name"]}, amount = {row["amount"]}")
+                raise NotPositiveError(f"Error: amount variable can not be zero or less:\n\n name = {row["name"]}, amount = {row["amount"]}")
             
             if search_result := search_req(row["name"]):
                 new_row = search_result
@@ -165,22 +169,6 @@ class CryptoNotFound(Exception):
 class NotPositiveError(Exception):
     pass
 #---------------------------------------------------
-def get_by_id(*ids, url = url):
-    url += "?ids="
-    for id in ids:
-        url += id + ","
-
-    response = requests.get(url , headers = headers)
-
-    if response.status_code == 200:
-        response = response.json()["data"]
-    else:
-        print("Error!")
-
-    response_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in response if crypto["id"] != ""]
-    
-    return response_dict
-
 
 def search_req(name, url = url):
     url += "?search="
@@ -193,7 +181,7 @@ def search_req(name, url = url):
     else:
         print("Error")
 
-    r_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in r]
+    r_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"], "rank": crypto["rank"]} for crypto in r]
 
 
     for i, c in enumerate(r_dict):
@@ -216,16 +204,6 @@ def search_req(name, url = url):
         return r_dict[index]
     else:
         return False
-
-def get_by_search(*ids):
-    list_of_cryptoes = []
-    for id in ids:
-        if result := search_req(id):
-            list_of_cryptoes.append(result)
-        else:
-            print(f"could not find {id}")
-    return list_of_cryptoes
-
 
 if __name__ == "__main__":
     main()
