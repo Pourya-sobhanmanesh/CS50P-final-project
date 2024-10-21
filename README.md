@@ -75,18 +75,18 @@ You can update the portfolio by editing this CSV file to reflect your current ho
 - Modify the portfolio.csv file to keep your portfolio up to date.
 
 ### additional functions:
-- **`get_by_id(*ids, url=url)`**:
+- **get_by_id(*ids, url=url)**:
     - Fetches cryptocurrency data for the specified ids from the CoinCap API.
 
     - The function returns a dictionary containing the extracted information for each cryptocurrency.The function returns a dictionary containing the extracted information for each cryptocurrency.
-- **`search_req(name, url=url)`**:
+- **search_req(name, url=url)**:
     - Searches for a specific cryptocurrency by its name, symbol, or ID
 
     - This function appends the search term to the CoinCap API URL and sends a GET request. It returns a dictionary with details about the cryptocurrency such as ID, symbol, name, price in USD, and 24-hour percentage change.
     
     - It also checks if the search term matches the cryptocurrency's name, symbol, or ID and returns the first match it finds.
 
-- **`get_by_search(*ids)`**:
+- **get_by_search(*ids)**:
     - This function takes in a list of cryptocurrency names, symbols, or IDs and performs a search using `search_req()`.
 
     - It returns a list of cryptocurrencies that match the search criteria.
