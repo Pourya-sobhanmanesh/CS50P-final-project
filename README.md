@@ -73,7 +73,12 @@ You can update the portfolio by editing this CSV file to reflect your current ho
 ### Additional Notes:
 - Ensure you have an active internet connection to retrieve cryptocurrency data.
 - Modify the portfolio.csv file to keep your portfolio up to date.
+- #### API Key Retrieval:
+The program uses the following line of code to retrieve the API key from an environment variable:
 
+```python
+api_key = os.getenv("API_KEY")
+```
 ### additional functions:
 - **get_by_id(*ids, url=url)**:
     - Fetches cryptocurrency data for the specified ids from the CoinCap API.
