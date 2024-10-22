@@ -122,7 +122,7 @@ def open_search_window():
                 change_rate = f"{round(float(search_var["change_percent"]), 2)}%"
 
             result_text.set(
-                f"\nfound: {search_var["name"]}\n---------\nRank: {search_var["rank"]}\n---------\nCurrent Price: {round(float(search_var["priceusd"]), 2)}\n---------\n24Hours Change: {change_rate}"
+                f"\nfound: {search_var['name']}\n---------\nRank: {search_var['rank']}\n---------\nCurrent Price: {round(float(search_var['priceusd']), 2)}\n---------\n24Hours Change: {change_rate}"
             )
         else:
             result_text.set(
@@ -173,12 +173,13 @@ def read_csv(path="portfolio.csv"):
         return reader_list
 
 
-def return_final_dict(reader_list):
+def return_final_dict(reader_list, sort_by = "total_val"):
     for row in reader_list:
         row["total_val"] = row["amount"] * float(row["priceusd"])
         row["total_val"] = f"{round(row["total_val"], 2)}"
         row["priceusd"] = "{:.4f}".format(float(row["priceusd"]))
-    return reader_list
+    
+    return sorted(reader_list, key=lambda row: float(row[sort_by]), reverse=True)
 
 
 def calculate_total_value_all(final_dict):
