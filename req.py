@@ -1,14 +1,12 @@
 import requests
 from pprint import pprint
+import os
 
-url = 'https://api.coincap.io/v2/assets'
-api_key = 'b62751b6-510e-4f6b-ae4e-82e5e7899fa7'
+url = "https://api.coincap.io/v2/assets"
+api_key = os.getenv("API_KEY")
 encoding_methods = "gzip, deflate"
 
-headers = {
-    "Accept-Encoding" : encoding_methods,
-    "Authorization" : f"Bearer {api_key}"
-}
+headers = {"Accept-Encoding": encoding_methods, "Authorization": f"Bearer {api_key}"}
 
 
 owned_crypto = {
@@ -23,42 +21,61 @@ owned_crypto = {
 }
 
 
-
 ids = [id for id in owned_crypto]
+
 
 def main():
     pprint(get_by_id(*ids))
 
-def get_by_id(*ids, url = url):
+
+def get_by_id(*ids, url=url):
     url += "?ids="
     for id in ids:
         url += id + ","
 
-    response = requests.get(url , headers = headers)
+    response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         response = response.json()["data"]
     else:
         print("Error!")
 
-    response_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in response if crypto["id"] != ""]
-    
+    response_dict = [
+        {
+            "id": crypto["id"],
+            "symbol": crypto["symbol"],
+            "name": crypto["name"],
+            "priceusd": crypto["priceUsd"],
+            "change_percent": crypto["changePercent24Hr"],
+        }
+        for crypto in response
+        if crypto["id"] != ""
+    ]
+
     return response_dict
 
 
-def search_req(name, url = url):
+def search_req(name, url=url):
     url += "?search="
     url += name
 
-    r = requests.get(url, headers = headers)
+    r = requests.get(url, headers=headers)
 
     if r.status_code == 200:
         r = r.json()["data"]
     else:
         print("Error")
 
-    r_dict = [{"id":crypto["id"], "symbol":crypto["symbol"], "name":crypto["name"], "priceusd": crypto["priceUsd"], "change_percent":crypto["changePercent24Hr"]} for crypto in r]
-
+    r_dict = [
+        {
+            "id": crypto["id"],
+            "symbol": crypto["symbol"],
+            "name": crypto["name"],
+            "priceusd": crypto["priceUsd"],
+            "change_percent": crypto["changePercent24Hr"],
+        }
+        for crypto in r
+    ]
 
     for i, c in enumerate(r_dict):
         if c["id"] == name.lower():
@@ -81,6 +98,7 @@ def search_req(name, url = url):
     else:
         return False
 
+
 def get_by_search(*ids):
     list_of_cryptoes = []
     for id in ids:
@@ -93,5 +111,3 @@ def get_by_search(*ids):
 
 if __name__ == "__main__":
     main()
-
-
