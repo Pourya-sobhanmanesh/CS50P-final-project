@@ -42,6 +42,9 @@ def main():
     except CryptoNotFound as e:
         error = ttk.Label(root, text=e, font=font)
         error.grid(row=1, column=0, sticky="w", padx=padx, pady=pady)
+    except requests.exceptions.ConnectionError:
+        error = ttk.Label(root, text= "Internet Connection Error: \nSomething is wrong with your Internet Connection", font=font)
+        error.grid(row=1, column=0, sticky="w", padx=padx, pady=pady)
     else:
         total_val_all = calculate_total_value_all(final_dict)
 
